@@ -10,6 +10,19 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 
 dbHelper.connectDB();
+app.use(expressLayouts);
+app.set("view engine", "ejs");
+app.use('/assets/', express.static('public/assets/'));
+
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header('Access-Control-Allow-Credentials', true);
+    next();
+});
+
+
 app.use(express.urlencoded({ extended: false }));
 app.use(session({
     secret: "secret",
@@ -17,9 +30,11 @@ app.use(session({
     saveUninitialized: true,
   })
 );
+
 app.use(passport.initialize());
 app.use(passport.session());
 passport_config(passport);
+
 app.use(flash());
 app.use((req, res, next) => {
     res.locals.success_msg = req.flash('success_msg');
@@ -27,8 +42,13 @@ app.use((req, res, next) => {
     res.locals.error = req.flash('error');
     next();
 });
-app.use(expressLayouts);
-app.set("view engine", "ejs");
+
 app.use(routers);
+app.get('/api/*',(req, res) => {
+  res.status(404).json({
+      message: 'Not found',
+      description: 'Failed to load page'
+  });
+});
 
 app.listen(PORT, console.log(`Server start on port ${PORT}`));

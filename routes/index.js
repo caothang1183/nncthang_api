@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const user_routers = require('./users');
+const product_routers = require('./products');
+
 const { ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
 
 router.get('/', forwardAuthenticated, (_req, res) => {
@@ -9,6 +11,7 @@ router.get('/', forwardAuthenticated, (_req, res) => {
 })
 
 router.use('/users', user_routers);
+router.use('/api/products', product_routers);
 
 
 router.get('/success', ensureAuthenticated, (req, res) =>
@@ -16,5 +19,6 @@ router.get('/success', ensureAuthenticated, (req, res) =>
     user: req.user
   })
 );
+
 
 module.exports = router;

@@ -7,9 +7,7 @@ module.exports = function(passport) {
     new LocalStrategy(
       { usernameField: "username" },
       (username, password, done) => {
-        User.findOne({
-          $or: [{ username: username }, { email: email }]
-        }).then(user => {
+        User.findOne({ username: username }).then(user => {
           if (!user) {
             return done(null, false, { message: "Username is not exist" });
           }
