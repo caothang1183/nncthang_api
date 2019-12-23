@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../../models/User");
+const { Role } = require("../../models/Role");
 const bcrypt = require("bcryptjs");
 const passport = require("passport");
 const { forwardAuthenticated } = require("../../config/auth");
@@ -49,19 +50,21 @@ router.post("/register", (req, res) => {
                     confirmPassword
                 });
             } else {
-                const newUser = new User({ username, email, fullname, password });
-                bcrypt.genSalt(10, (err, salt) => {
-                    bcrypt.hash(newUser.password, salt, (err, hash) => {
-                        if (err) throw err;
-                        newUser.password = hash;
-                        newUser
-                            .save()
-                            .then(user => {
-                                req.flash("success_msg", "Register successfully");
-                                req.flash("current_user", user.username);
-                                res.redirect("/users/login");
-                            })
-                            .catch(errors => console.error(errors));
+                Role.findOne({ role_type: 1 }).then(role => {
+                    const newUser = new User({ username, email, fullname, password, role });
+                    bcrypt.genSalt(10, (err, salt) => {
+                        bcrypt.hash(newUser.password, salt, (err, hash) => {
+                            if (err) throw err;
+                            newUser.password = hash;
+                            newUser
+                                .save()
+                                .then(user => {
+                                    req.flash("success_msg", "Register successfully");
+                                    req.flash("current_user", user.username);
+                                    res.redirect("/users/login");
+                                })
+                                .catch(errors => console.error(errors));
+                        });
                     });
                 });
             }

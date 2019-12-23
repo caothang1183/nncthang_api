@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
+const { RoleSchema } = require("./Role");
 
-const UserSchema = mongoose.Schema({
+const userSchema = mongoose.Schema({
     username: {
         type: String,
         required: true
@@ -18,9 +19,7 @@ const UserSchema = mongoose.Schema({
         required: false
     },
     role: {
-        type: Number,
-        required: true,
-        default: 2
+        type: RoleSchema,
     },
     created_date: {
         type: Date,
@@ -28,6 +27,6 @@ const UserSchema = mongoose.Schema({
     }
 });
 
-const User = mongoose.model("User", UserSchema);
+const User = mongoose.model("User", userSchema);
 
 module.exports = User;
