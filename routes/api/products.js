@@ -1,8 +1,10 @@
-const express = require("express");
-const router = express.Router();
+const jwt = require("jsonwebtoken");
 
-router.get("/", (_req, res) => {
-    res.json({ page: "products" });
-});
-
-module.exports = router;
+module.exports = (router, verifyToken) => {
+  router.get("/products", verifyToken, (req, res) => {
+    jwt.verify(req.token, "secretKey", err => {
+      if (err) return res.sendStatus(403);
+      res.json({ page: "products" });
+    });
+  });
+};

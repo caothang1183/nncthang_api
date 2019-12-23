@@ -1,10 +1,10 @@
 const express = require("express");
 const flash = require("connect-flash");
 const session = require("express-session");
+const bodyParser = require('body-parser');
 const dbHelper = require("./helper/db_helper");
 const routers = require("./routes/index");
 const routers_api = require("./routes/index_api");
-const jwt = require("jsonwebtoken");
 const passport = require("passport");
 const passport_config = require("./config/passport");
 const expressLayouts = require("express-ejs-layouts");
@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 4000;
 const IP = process.env.IP || "localhost";
 
 // Connect to MongoDB
-dbHelper.connectDB();
+dbHelper.connectMongoDB();
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
@@ -26,7 +26,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(express.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // ========== DashBoard API ==========
 

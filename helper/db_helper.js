@@ -1,9 +1,13 @@
 const mongoose = require("mongoose");
+const database = require("../config/API");
 
-const connectDB = function() {
-  const db = require("../config/keys").MongoURI;
+mongoose.set("useNewUrlParser", true);
+mongoose.set("useFindAndModify", false);
+mongoose.set("useCreateIndex", true);
+
+module.exports.connectMongoDB = function() {
   mongoose
-    .connect(db, {
+    .connect(database.mongoURI, {
       useUnifiedTopology: true,
       useNewUrlParser: true
     })
@@ -11,4 +15,16 @@ const connectDB = function() {
     .catch(err => console.error(err));
 };
 
-module.exports.connectDB = connectDB;
+module.exports.connectMlabDB = function() {
+  mongoose.set("useNewUrlParser", true);
+  mongoose.set("useFindAndModify", false);
+  mongoose.set("useCreateIndex", true);
+  mongoose
+    .connect(database.mongoURI, {
+      useUnifiedTopology: true,
+      useNewUrlParser: true
+    })
+    .then(() => console.log("MongoDB connected"))
+    .catch(err => console.error(err));
+};
+
