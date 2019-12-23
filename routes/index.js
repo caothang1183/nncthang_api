@@ -6,22 +6,20 @@ const product_routers = require("./dashboard/products");
 const { ensureAuthenticated, forwardAuthenticated } = require("../config/auth");
 
 router.get("/", forwardAuthenticated, (_req, res) => {
-  res.render("index");
+    res.render("index");
 });
 
 router.use("/users", user_routers);
 router.use("/dashboard/products", ensureAuthenticated, product_routers);
 
 router.get("/dashboard/*", (req, res) => {
-  res.status(404).render("common/404");
+    res.status(404).render("common/404");
 });
 
 router.get("/success", ensureAuthenticated, (req, res) =>
-  res.render("success", {
-    user: req.user
-  })
+    res.render("success", {
+        user: req.user
+    })
 );
-
-
 
 module.exports = router;
