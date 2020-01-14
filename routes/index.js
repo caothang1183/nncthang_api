@@ -2,8 +2,18 @@ const express = require("express");
 const router = express.Router();
 const user_routers = require("./dashboard/users");
 const product_routers = require("./dashboard/products");
-
+const bodyParser = require("body-parser");
 const { ensureAuthenticated, forwardAuthenticated } = require("../config/auth");
+
+router.use(bodyParser.json());
+router.use(bodyParser.urlencoded({ extended: true }));
+router.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow-Credentials", true);
+    next();
+});
 
 router.get("/", forwardAuthenticated, (_req, res) => {
     res.render("index");

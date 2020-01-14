@@ -16,6 +16,7 @@ router.get("/register", forwardAuthenticated, (_req, res) => {
 
 router.post("/register", (req, res) => {
     const { username, email, fullname, password, confirmPassword } = req.body;
+    console.log(req.body)
     let errors = [];
 
     if (!username || !email || !password || !confirmPassword) {

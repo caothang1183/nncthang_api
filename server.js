@@ -15,16 +15,6 @@ const IP = process.env.IP || "localhost";
 // Connect to MongoDB
 dbHelper.connectMongoDB();
 
-app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    res.header("Access-Control-Allow-Credentials", true);
-    next();
-});
-
-app.use(bodyParser.urlencoded({ extended: true }));
-
 // ========== DashBoard API ==========
 
 // engine to display page
